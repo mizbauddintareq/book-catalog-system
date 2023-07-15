@@ -1,34 +1,25 @@
-import React from "react";
-import heroBg from "../assets/5807342.jpg";
-
-const Hero: React.FC = () => {
+import heroBG from "../assets/pexels-aline-viana-prado-2465877.jpg";
+export default function Hero() {
   return (
-    <section className="bg-indigo-900 py-20">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center justify-center text-center lg:text-left">
-          <div className="lg:w-1/2">
-            <img
-              className="w-full rounded-lg shadow-lg mb-8"
-              src={heroBg}
-              alt="Book Catalog System"
-            />
-          </div>
-          <div className="lg:w-1/2 lg:pl-16">
-            <h1 className="text-4xl lg:text-6xl text-indigo-100 font-bold mb-6">
-              Welcome to Book Catalog System
-            </h1>
-            <p className="text-xl lg:text-2xl text-indigo-200 mb-8">
-              Explore our vast collection of books and discover your next
-              favorite read.
-            </p>
-            <button className="bg-indigo-200 hover:bg-indigo-300 text-indigo-900 font-bold py-3 px-6 rounded-lg shadow-lg transition-colors duration-300">
-              Get Started
-            </button>
-          </div>
+    <div
+      className="hero min-h-[70vh]"
+      style={{
+        backgroundImage: `url(${heroBG})`,
+      }}
+    >
+      <div className="hero-overlay bg-opacity-80"></div>
+      <div className="hero-content text-center text-neutral-content">
+        <div className="mx-auto">
+          <h1 className="mb-5 text-5xl font-bold max-w-xl">
+            Explore the Enchanting Realm of Books
+          </h1>
+          <p className="mb-5 max-w-xl">
+            A gateway to a world of knowledge, imagination, and inspiration.
+            Explore our vast collection of books spanning various genres, from
+            timeless classics to contemporary masterpieces
+          </p>
         </div>
       </div>
-    </section>
+    </div>
   );
-};
-
-export default Hero;
+}

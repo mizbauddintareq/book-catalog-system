@@ -4,218 +4,148 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useEffect, useState } from "react";
 import TableRow from "../components/TableRow";
 import { useGetAllBooksQuery } from "../redux/api/apiSlice";
 import { IBook } from "../types/IBook";
-import { useState, useEffect } from "react";
 
 export default function AllBooks() {
   const { data, isLoading } = useGetAllBooksQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
-  console.log(isLoading);
 
-  let [filteredData, setFilteredData] = useState<IBook[] | undefined>(
-    data?.data
-  );
-
+  const [filteredData, setFilteredData] = useState<IBook[]>([]);
   const [search, setSearch] = useState("");
   const [year, setYear] = useState("");
   const [genre, setGenre] = useState("");
 
   useEffect(() => {
-    setFilteredData(data?.data);
-  }, [data?.data]);
+    setFilteredData(data?.data || []);
+  }, [data]);
 
-  const handleSearch = (e: {
-    preventDefault: () => void;
-    currentTarget: any;
-  }) => {
-    e.preventDefault();
-
-    const search = e.currentTarget.value;
-    console.log({ search });
-    setSearch(search);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
   };
 
-  const handleYear = (e: {
-    preventDefault: () => void;
-    currentTarget: any;
-  }) => {
-    e.preventDefault();
-
-    const year = e.currentTarget.value;
-    console.log({ year });
-    setYear(year);
+  const handleYear = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setYear(e.target.value);
   };
 
-  const handleGenre = (e: {
-    preventDefault: () => void;
-    currentTarget: any;
-  }) => {
-    e.preventDefault();
-
-    const genre = e.currentTarget.value;
-    console.log({ genre });
-    setGenre(genre);
+  const handleGenre = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setGenre(e.target.value);
   };
 
-  const genres = data?.data.map((indivBook: IBook) => indivBook.genre);
-
-  if (search.length && year.length && genre.length) {
-    filteredData = data?.data.filter(
-      (indivBook: IBook) =>
-        (indivBook.title.toLowerCase().includes(search.toLowerCase()) ||
-          indivBook.author.toLowerCase().includes(search.toLowerCase()) ||
-          indivBook.genre.toLowerCase().includes(search.toLowerCase())) &&
-        parseInt(indivBook.publicationDate.slice(-4)) < parseInt(year) &&
-        (genre !== "All"
-          ? indivBook.genre.includes(genre)
-          : genres.includes(indivBook.genre))
-    );
-  } else if (search.length && year.length) {
-    filteredData = data?.data.filter(
-      (indivBook: IBook) =>
-        (indivBook.title.toLowerCase().includes(search.toLowerCase()) ||
-          indivBook.author.toLowerCase().includes(search.toLowerCase()) ||
-          indivBook.genre.toLowerCase().includes(search.toLowerCase())) &&
-        parseInt(indivBook.publicationDate.slice(-4)) < parseInt(year)
-    );
-  } else if (search.length && genre.length) {
-    filteredData = data?.data.filter(
-      (indivBook: IBook) =>
-        (indivBook.title.toLowerCase().includes(search.toLowerCase()) ||
-          indivBook.author.toLowerCase().includes(search.toLowerCase()) ||
-          indivBook.genre.toLowerCase().includes(search.toLowerCase())) &&
-        (genre !== "All"
-          ? indivBook.genre.includes(genre)
-          : genres.includes(indivBook.genre))
-    );
-  } else if (year.length && genre.length) {
-    filteredData = data?.data.filter(
-      (indivBook: IBook) =>
-        parseInt(indivBook.publicationDate.slice(-4)) < parseInt(year) &&
-        (genre !== "All"
-          ? indivBook.genre.includes(genre)
-          : genres.includes(indivBook.genre))
-    );
-  } else if (search.length) {
-    filteredData = data?.data.filter(
-      (indivBook: IBook) =>
-        indivBook.title.toLowerCase().includes(search.toLowerCase()) ||
-        indivBook.author.toLowerCase().includes(search.toLowerCase()) ||
-        indivBook.genre.toLowerCase().includes(search.toLowerCase())
-    );
-  } else if (year.length) {
-    filteredData = data?.data.filter(
-      (indivBook: IBook) =>
-        parseInt(indivBook.publicationDate.slice(-4)) < parseInt(year)
-    );
-  } else if (genre.length) {
-    if (genre === "All") {
-      filteredData = data?.data;
-    } else {
-      filteredData = data?.data.filter(
-        (indivBook: IBook) => indivBook.genre === genre
-      );
-    }
-  }
-
-  console.log({ filteredData });
-
-  // setFilteredData(filteredData);
+  useEffect(() => {
+    const filteredBooks = data?.data.filter((individualBook: IBook) => {
+      const titleMatch = individualBook.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const authorMatch = individualBook.author
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const genreMatch =
+        genre === "All" || individualBook.genre.includes(genre);
+      const publicationYearMatch =
+        year === "" ||
+        parseInt(individualBook.publicationDate.slice(-4)) === parseInt(year);
+      return (titleMatch || authorMatch) && genreMatch && publicationYearMatch;
+    });
+    setFilteredData(filteredBooks || []);
+  }, [data, search, year, genre]);
 
   return (
-    <div className="w-8/12 mx-auto mt-12">
-      <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
-        List of all books
-      </p>
+    <div className="container mx-auto px-4 mt-12">
+      <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+        List of All Books
+      </h1>
 
-      <div className="mt-8">
-        <form className="w-9/12 mx-auto grid 2xl:grid-cols-3 lg:grid-cols-2 gap-8">
-          <div className="form-control">
-            <div className="input-group">
-              <input
-                type="text"
-                name="search"
-                onChange={handleSearch}
-                placeholder="name, author or genre"
-                className="input input-bordered focus:outline-none"
-              />
-              <button type="submit" className="btn btn-square">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div className="form-control">
-            <label className="input-group">
-              <span>Publication Year upto</span>
-              <select
-                onChange={handleYear}
-                name="year"
-                className="select select-bordered focus:outline-none"
-              >
-                <option defaultValue={2023}>2023</option>
-                <option value={1950}>1950</option>
-                <option value={1900}>1900</option>
-                <option value={1850}>1850</option>
-                <option value={1800}>1800</option>
-              </select>
+      <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div className="flex-1 sm:max-w-md">
+          <input
+            type="text"
+            name="search"
+            value={search}
+            onChange={handleSearch}
+            placeholder="Search by name or author"
+            className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="flex-1">
+            <label htmlFor="year" className="sr-only">
+              Publication Year
             </label>
+            <select
+              name="year"
+              id="year"
+              value={year}
+              onChange={handleYear}
+              className="block w-full sm:w-auto border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="">Any Publication Year</option>
+              <option value={2019}>2019</option>
+              <option value={2020}>2020</option>
+              <option value={2021}>2021</option>
+              <option value={2022}>2022</option>
+              <option value={2023}>2023</option>
+            </select>
           </div>
-
-          <div className="form-control">
-            <label className="input-group">
-              <span>Genre</span>
-              <select
-                onChange={handleGenre}
-                name="year"
-                className="select select-bordered focus:outline-none"
-              >
-                <option defaultValue="All">All</option>
-                <option value="Fiction">Fiction</option>
-                <option value="Romance">Romance</option>
-                <option value="Fantasy">Fantasy</option>
-                <option value="Dystopian">Dystopian</option>
-              </select>
+          <div className="flex-1">
+            <label htmlFor="genre" className="sr-only">
+              Genre
             </label>
+            <select
+              name="genre"
+              id="genre"
+              value={genre}
+              onChange={handleGenre}
+              className="block w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="All">All Genres</option>
+              <option value="History">History</option>
+              <option value="Science">Science</option>
+              <option value="Poem">Poem</option>
+              <option value="Fantasy">Fantasy</option>
+            </select>
           </div>
-        </form>
+        </div>
       </div>
 
-      <div className="overflow-x-auto mt-8">
-        <table className="table table-zebra">
-          {/* head */}
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Author</th>
-              <th>Genre</th>
-              <th>Publication Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData?.map((book: IBook, idx: number) => (
-              <TableRow key={book._id} idx={idx} book={book}></TableRow>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-8">
+        {isLoading ? (
+          <p className="text-center">Loading...</p>
+        ) : filteredData.length === 0 ? (
+          <p className="text-center">No books found.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full bg-white border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">
+                    Author
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">
+                    Genre
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">
+                    Publication Date
+                  </th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-600">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredData.map((book: IBook, idx: number) => (
+                  <TableRow key={book._id} idx={idx} book={book} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

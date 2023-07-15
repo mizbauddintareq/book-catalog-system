@@ -1,25 +1,40 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
+import { useParams } from "react-router-dom";
+import {
+  useEditBookMutation,
+  useGetSingleBookQuery,
+} from "../redux/api/apiSlice";
 import { toast } from "react-hot-toast";
-import { useAddBookMutation } from "../redux/api/apiSlice";
 import { useAppSelector } from "../redux/hooks";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-export default function AddNewBook() {
+export default function EditeBook() {
+  const { id } = useParams();
+
+  const { data } = useGetSingleBookQuery(id, {
+    refetchOnMountOrArgChange: true,
+  });
+
   const { user } = useAppSelector((state) => state.user);
 
-  const [addBook, { isLoading }] = useAddBookMutation();
+  if (data?.data?.uploader !== user.email) {
+    return (
+      <p className="text-red-500 text-center mt-20 text-lg">
+        You are not Valid user
+      </p>
+    );
+  }
 
-  console.log({ isLoading });
+  const [editBook] = useEditBookMutation();
 
-  const handleAddBook = async (e: {
-    preventDefault: () => void;
-    target: any;
-  }) => {
+  const date: Date = new Date(data?.data?.publicationDate);
+  const defaultDate = date.toLocaleDateString("en-CA");
+
+  const handleEdit = async (e: { preventDefault: () => void; target: any }) => {
     e.preventDefault();
     const form = e.target;
 
@@ -38,42 +53,36 @@ export default function AddNewBook() {
       dateObject
     );
 
-    console.log({ title, author, genre, formattedDate, user });
+    // console.log({ title, author, genre, formattedDate });
 
     const option = {
-      title,
-      author,
-      genre,
-      publicationDate: formattedDate,
-      uploader: user.email,
+      id,
+      data: {
+        title,
+        author,
+        genre,
+        publicationDate: formattedDate,
+      },
     };
 
-    try {
-      const response = await addBook(option);
+    await editBook(option);
 
-      if ("error" in response) {
-        return toast.error("Failed to Add Book");
-      }
-
-      form.reset();
-      toast.success("Book Added Successfully");
-    } catch (error) {
-      toast.error("Failed to Add Book");
-    }
+    toast.success("Updated Successfully");
   };
 
   return (
     <div className="container mx-auto mt-12">
       <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
-        Fill up the info to Add book
+        Edit Your Book Information
       </p>
       <div className="mt-8 py-8 bg-slate-200 rounded-lg">
-        <form onSubmit={handleAddBook}>
+        <form onSubmit={handleEdit}>
           <div className="grid lg:grid-cols-2 gap-8 w-9/12 mx-auto">
             <input
               type="text"
               name="title"
               placeholder="Enter title"
+              defaultValue={data?.data?.title}
               className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
               required
             />
@@ -81,6 +90,7 @@ export default function AddNewBook() {
               type="text"
               name="author"
               placeholder="Enter Author"
+              defaultValue={data?.data?.author}
               className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
               required
             />
@@ -88,6 +98,7 @@ export default function AddNewBook() {
               type="text"
               name="genre"
               placeholder="Enter Genre"
+              defaultValue={data?.data?.genre}
               className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
               required
             />
@@ -98,6 +109,7 @@ export default function AddNewBook() {
                 <input
                   type="date"
                   name="publishDate"
+                  defaultValue={defaultDate}
                   className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
                   required
                 />
@@ -109,7 +121,7 @@ export default function AddNewBook() {
               type="submit"
               className="btn btn-block btn-neutral text-white"
             >
-              Add The Book
+              Submit
             </button>
           </div>
         </form>

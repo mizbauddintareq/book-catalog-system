@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useAddCommentMutation,
+  useAddToWishlistMutation,
+  useDeleteBookMutation,
   useGetSingleBookQuery,
+  useGetSingleUserQuery,
 } from "../redux/api/apiSlice";
 import { toast } from "react-hot-toast";
 import { FaUserAlt } from "react-icons/fa";
@@ -19,7 +23,13 @@ export default function BookDetails() {
   const { data, isLoading } = useGetSingleBookQuery(id);
 
   const [addComment] = useAddCommentMutation();
+  const [deleteBook] = useDeleteBookMutation();
   const { user } = useAppSelector((state) => state.user);
+
+  const { data: webUser } = useGetSingleUserQuery(user.id);
+  const [addToWishlist] = useAddToWishlistMutation();
+
+  const navigate = useNavigate();
 
   //   console.log(isLoading);
 
@@ -44,12 +54,39 @@ export default function BookDetails() {
       },
     };
     await addComment(option);
-    toast.success("Comment Added Successfully");
+    toast.success("Review Added Successfully");
     form.reset();
   };
 
+  const handleGoToEdit = () => {
+    navigate(`/editbook/${data.data._id}`);
+  };
+
+  const handleDelete = async () => {
+    const confirm = window.confirm("Do you want to delete it ?");
+    if (confirm) {
+      await deleteBook(id);
+      toast.success("Deleted Successfully");
+      navigate("/allbooks");
+    }
+  };
+
+  const handleWishlist = async () => {
+    const book = data?.data?.title;
+
+    const option = {
+      id: user.id,
+      data: {
+        book,
+      },
+    };
+
+    await addToWishlist(option);
+    toast.success("Added to Wishlist Successfully");
+  };
+
   return (
-    <div className="container mx-auto my-12">
+    <div className="w-9/12 mx-auto my-12">
       <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
         Details of {data?.data?.title}
       </p>
@@ -70,7 +107,13 @@ export default function BookDetails() {
             <span className="text-cyan-500">{data?.data?.publicationDate}</span>
           </p>
           <div className="card-action mt-4 flex gap-4">
-            <button className="btn bg-cyan-500 text-white hover:bg-cyan-600">
+            <button
+              onClick={handleWishlist}
+              className={`${
+                webUser?.data?.wishlist.includes(data?.data?.title) &&
+                `btn-disabled`
+              } btn bg-cyan-500 text-white hover:bg-cyan-600`}
+            >
               Wishlist
             </button>
             <button className="btn bg-transparent border-cyan-500 text-cyan-500">
@@ -81,10 +124,16 @@ export default function BookDetails() {
           <div>
             {data?.data?.uploader === user.email && (
               <div className="mt-4 flex gap-4">
-                <button className="btn bg-cyan-500 px-10 text-white hover:bg-cyan-600">
+                <button
+                  onClick={handleGoToEdit}
+                  className="btn bg-cyan-500 px-10 text-white hover:bg-cyan-600"
+                >
                   Edit
                 </button>
-                <button className="btn bg-transparent px-8 border-red-500 text-red-500">
+                <button
+                  onClick={handleDelete}
+                  className="btn bg-transparent px-8 border-red-500 text-red-500"
+                >
                   Delete
                 </button>
               </div>
@@ -99,20 +148,20 @@ export default function BookDetails() {
             <input
               type="text"
               name="comment"
-              placeholder="Type your comment"
-              className="input input-bordered w-full"
+              placeholder="Type your Review"
+              className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
             />
             <span>
-              <button type="submit">Comment</button>
+              <button type="submit">Submit</button>
             </span>
           </label>
         </div>
       </form>
 
       <div className="mt-8">
-        <p className="text-lg text-cyan-500">Comments</p>
-        {data?.data?.comments.map((comment: string) => (
-          <div className="flex items-center gap-4 mt-4">
+        <p className="text-lg text-cyan-500">Reviews</p>
+        {data?.data?.comments.map((comment: string, idx: number) => (
+          <div key={idx} className="flex items-center gap-4 mt-4">
             <FaUserAlt />
             <p>{comment}</p>
           </div>

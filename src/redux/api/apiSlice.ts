@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1" }),
-  tagTypes: ["Comments"],
+  tagTypes: ["Comments", "User"],
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (loginData) => ({
@@ -21,6 +21,20 @@ export const api = createApi({
         body: loginData,
       }),
     }),
+    addToWishlist: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `/users/wishlist/${id}`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    getSingleUser: builder.query({
+      query: (id) => `/users/${id}`,
+      providesTags: ["User"],
+    }),
+
     getAllBooks: builder.query({
       query: () => "/books",
       providesTags: ["Comments"],
@@ -48,6 +62,23 @@ export const api = createApi({
       }),
       invalidatesTags: ["Comments"],
     }),
+
+    editBook: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `/books/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Comments"],
+    }),
+
+    deleteBook: builder.mutation({
+      query: (id) => ({
+        url: `/books/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Comments"],
+    }),
   }),
 });
 
@@ -59,4 +90,8 @@ export const {
   useGetLatestBooksQuery,
   useGetSingleBookQuery,
   useAddCommentMutation,
+  useEditBookMutation,
+  useDeleteBookMutation,
+  useAddToWishlistMutation,
+  useGetSingleUserQuery,
 } = api;
