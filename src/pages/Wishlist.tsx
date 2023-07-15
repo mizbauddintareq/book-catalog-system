@@ -1,17 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { useGetSingleUserQuery } from "../redux/api/apiSlice";
+import Loader from "../components/Loader";
+import { useGetSingleUserQuery } from "../redux/features/user/userApi";
 import { useAppSelector } from "../redux/hooks";
 import { FaBook } from "react-icons/fa";
 
 export default function Wishlist() {
   const { user } = useAppSelector((state) => state.user);
 
-  const { data } = useGetSingleUserQuery(user.id);
+  const { data, isLoading } = useGetSingleUserQuery(user.id);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (data?.data?.wishlist.length < 1) {
+    return (
+      <p className="text-center text-lg text-red-400 mt-12">
+        No Book Added to Wishlist
+      </p>
+    );
+  }
 
   return (
-    <section className="container mx-auto mt-12">
+    <section className="container mx-auto my-12">
       <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
         Here are your book from wishlist
       </p>

@@ -4,12 +4,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { useParams } from "react-router-dom";
-import {
-  useEditBookMutation,
-  useGetSingleBookQuery,
-} from "../redux/api/apiSlice";
+
 import { toast } from "react-hot-toast";
 import { useAppSelector } from "../redux/hooks";
+import { useEditBookMutation, useGetSingleBookQuery } from "../redux/features/book/bookApi";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export default function EditeBook() {

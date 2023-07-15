@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import BookDetails from "../pages/BookDetails";
 import EditeBook from "../pages/EditeBook";
 import Wishlist from "../pages/Wishlist";
+import ReadingList from "../pages/ReadingList";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Wishlist />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/readlist",
+        element: (
+          <PrivateRoute>
+            <ReadingList />
           </PrivateRoute>
         ),
       },

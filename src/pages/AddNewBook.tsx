@@ -5,8 +5,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { toast } from "react-hot-toast";
-import { useAddBookMutation } from "../redux/api/apiSlice";
 import { useAppSelector } from "../redux/hooks";
+import { useAddBookMutation } from "../redux/features/book/bookApi";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export default function AddNewBook() {

@@ -1,5 +1,5 @@
-import logo from "../assets/Vector_Book_blue.svg.png";
 import { FaFacebookF, FaTwitter, FaWhatsapp } from "react-icons/fa6";
+import logo from "../assets/logo.png";
 
 export default function Footer() {
   return (

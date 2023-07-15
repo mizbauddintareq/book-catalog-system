@@ -7,8 +7,8 @@
 
 import { toast } from "react-hot-toast";
 import "../styles/autofill.css";
-import { useCreateUserMutation } from "../redux/api/apiSlice";
 import { useNavigate } from "react-router-dom";
+import { useCreateUserMutation } from "../redux/features/user/userApi";
 export default function SignUp() {
   const [createUser, { isLoading }] = useCreateUserMutation();
   const navigate = useNavigate();

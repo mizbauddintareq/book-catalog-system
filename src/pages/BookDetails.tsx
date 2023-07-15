@@ -5,18 +5,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  useAddCommentMutation,
-  useAddToWishlistMutation,
-  useDeleteBookMutation,
-  useGetSingleBookQuery,
-  useGetSingleUserQuery,
-} from "../redux/api/apiSlice";
 import { toast } from "react-hot-toast";
 import { FaUserAlt } from "react-icons/fa";
 import cardIMG from "../assets/pexels-oziel-2846814.jpg";
 import Loader from "../components/Loader";
 import { useAppSelector } from "../redux/hooks";
+import { IReadList } from "../types/IReadList";
+import {
+  useAddCommentMutation,
+  useDeleteBookMutation,
+  useGetSingleBookQuery,
+} from "../redux/features/book/bookApi";
+import {
+  useAddToReadListMutation,
+  useAddToWishlistMutation,
+  useGetSingleUserQuery,
+} from "../redux/features/user/userApi";
 
 export default function BookDetails() {
   const { id } = useParams();
@@ -28,6 +32,7 @@ export default function BookDetails() {
 
   const { data: webUser } = useGetSingleUserQuery(user.id);
   const [addToWishlist] = useAddToWishlistMutation();
+  const [addToReadList] = useAddToReadListMutation();
 
   const navigate = useNavigate();
 
@@ -85,6 +90,24 @@ export default function BookDetails() {
     toast.success("Added to Wishlist Successfully");
   };
 
+  const handleRead = async () => {
+    const book = data?.data?.title;
+    const isComplete = false;
+
+    const option = {
+      id: user.id,
+      data: {
+        book,
+        isComplete,
+      },
+    };
+
+    await addToReadList(option);
+    console.log(webUser?.data?.readList);
+
+    toast.success("Added to Reading List");
+  };
+
   return (
     <div className="w-9/12 mx-auto my-12">
       <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
@@ -116,7 +139,14 @@ export default function BookDetails() {
             >
               Wishlist
             </button>
-            <button className="btn bg-transparent border-cyan-500 text-cyan-500">
+            <button
+              onClick={handleRead}
+              className={`${
+                webUser?.data?.readList.find(
+                  (book: IReadList) => book?.book === data?.data?.title
+                ) && `btn-disabled`
+              } btn bg-transparent border-cyan-500 text-cyan-500`}
+            >
               Plan To Read
             </button>
           </div>
