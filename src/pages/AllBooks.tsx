@@ -5,11 +5,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import TableRow from "../components/TableRow";
 import { useGetAllBooksQuery } from "../redux/features/book/bookApi";
 import { IBook } from "../types/IBook";
-import { useState, useEffect } from "react";
 
 export default function AllBooks() {
   const { data, isLoading } = useGetAllBooksQuery(undefined, {

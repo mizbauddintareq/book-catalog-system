@@ -21,7 +21,7 @@ export default function TableRow({ book, idx }: ITable) {
       <td>
         <button
           onClick={handleNavigate}
-          className="btn btn-neutral text-white btn-xs"
+          className="btn btn-neutral text-white btn-xs bg-slate-950"
         >
           Details
         </button>
