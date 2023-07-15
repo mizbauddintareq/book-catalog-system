@@ -3,7 +3,7 @@ import heroBg from "../assets/hero.jpg";
 
 const Hero: React.FC = () => {
   return (
-    <section className="bg-gray-100 py-20">
+    <section className="py-20">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-center text-center lg:text-left">
           <div className="lg:w-1/2">

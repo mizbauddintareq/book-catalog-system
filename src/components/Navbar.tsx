@@ -21,7 +21,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b-1 relative z-20 w-full border-b border-gray-200 bg-gray-100 text-slate-950">
+    <header className="border-b-1 relative z-20 w-full border-b border-gray-200 text-slate-950">
       <div className="relative mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]">
         <nav
           aria-label="main navigation"
@@ -71,7 +71,7 @@ export default function Navbar() {
           <ul
             role="menubar"
             aria-label="Select page"
-            className={`absolute top-0 left-0 z-[-1] h-[28.5rem] w-full justify-center overflow-hidden  overflow-y-auto overscroll-contain bg-gray-100/90 px-8 pb-12 pt-24 font-medium transition-[opacity,visibility] duration-300 lg:visible lg:relative lg:top-0  lg:z-0 lg:flex lg:h-full lg:w-auto lg:items-stretch lg:overflow-visible lg:bg-gray-100/0 lg:px-0 lg:py-0  lg:pt-0 lg:opacity-100 ${
+            className={`absolute top-0 left-0 z-[-1] h-[28.5rem] w-full justify-center overflow-hidden  overflow-y-auto overscroll-contain px-8 pb-12 pt-24 font-medium transition-[opacity,visibility] duration-300 lg:visible lg:relative lg:top-0  lg:z-0 lg:flex lg:h-full lg:w-auto lg:items-stretch lg:overflow-visible lg:px-0 lg:py-0  lg:pt-0 lg:opacity-100 ${
               isToggleOpen
                 ? "visible opacity-100 backdrop-blur-sm"
                 : "invisible opacity-0"
@@ -82,7 +82,7 @@ export default function Navbar() {
                 to="/"
                 role="menuitem"
                 aria-haspopup="false"
-                className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                className="flex items-center gap-2 py-4 lg:px-8"
               >
                 <span>Home</span>
               </NavLink>
@@ -93,7 +93,7 @@ export default function Navbar() {
                 to="/allbooks"
                 role="menuitem"
                 aria-haspopup="false"
-                className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                className="flex items-center gap-2 py-4 lg:px-8"
               >
                 <span>All Books</span>
               </NavLink>
@@ -106,7 +106,7 @@ export default function Navbar() {
                     to="/login"
                     role="menuitem"
                     aria-haspopup="false"
-                    className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                    className="flex items-center gap-2 py-4 lg:px-8"
                   >
                     <span>Login</span>
                   </NavLink>
@@ -116,7 +116,7 @@ export default function Navbar() {
                     to="/register"
                     role="menuitem"
                     aria-haspopup="false"
-                    className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                    className="flex items-center gap-2 py-4 lg:px-8"
                   >
                     <span>Registration</span>
                   </NavLink>
@@ -129,7 +129,7 @@ export default function Navbar() {
                     to="/addnew"
                     role="menuitem"
                     aria-haspopup="false"
-                    className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                    className="flex items-center gap-2 py-4 lg:px-8"
                   >
                     <span>Add New Book</span>
                   </NavLink>
@@ -139,7 +139,7 @@ export default function Navbar() {
                     to="/wishlist"
                     role="menuitem"
                     aria-haspopup="false"
-                    className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                    className="flex items-center gap-2 py-4 lg:px-8"
                   >
                     <span>Wishlist</span>
                   </NavLink>
@@ -149,7 +149,7 @@ export default function Navbar() {
                     to="/readlist"
                     role="menuitem"
                     aria-haspopup="false"
-                    className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                    className="flex items-center gap-2 py-4 lg:px-8"
                   >
                     <span>Reading List</span>
                   </NavLink>
@@ -159,7 +159,7 @@ export default function Navbar() {
                     onClick={handleLogOut}
                     role="menuitem"
                     aria-haspopup="false"
-                    className="flex items-center gap-2 py-4 focus:bg-cyan-50 focus:outline-none focus-visible:outline-none lg:px-8"
+                    className="flex items-center gap-2 py-4 lg:px-8"
                   >
                     <span>Log Out</span>
                   </button>

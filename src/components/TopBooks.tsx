@@ -11,15 +11,20 @@ export default function TopBooks() {
 
   return (
     <div className="container mx-auto my-12">
-      <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
-        Here are the latest top books
+      <p className="text-center text-3xl font-bold text-slate-950 underline-offset-8 ">
+        Best books of the world
       </p>
 
-      <div className="grid lg:grid-cols-3 gap-6 mt-12 text-center">
+      <div className="grid lg:grid-cols-3 mt-10">
         {data?.data.map((book: IBook) => (
-          <p key={book._id} className="text-lg font-semibold">
-            {book.title}
-          </p>
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 key={book._id} className="card-title">
+                {book.title}
+              </h2>
+              <p>Author: {book.author}</p>
+            </div>
+          </div>
         ))}
       </div>
     </div>
