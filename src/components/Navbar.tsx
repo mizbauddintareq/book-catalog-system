@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { setUser } from "../redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -13,7 +13,7 @@ export default function Navbar() {
 
   console.log(user);
 
-  const location = useLocation();
+  // const location = useLocation();
 
   const handleLogOut = () => {
     dispatch(setUser(null));

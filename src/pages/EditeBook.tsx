@@ -32,8 +32,8 @@ export default function EditeBook() {
 
   const [editBook] = useEditBookMutation();
 
-  const date: Date = new Date(data?.data?.publicationDate);
-  const defaultDate = date.toLocaleDateString("en-CA");
+  // const date: Date = new Date(data?.data?.publicationDate);
+  // const defaultDate = date.toLocaleDateString("en-CA");
 
   const handleEdit = async (e: { preventDefault: () => void; target: any }) => {
     e.preventDefault();
