@@ -16,9 +16,7 @@ export default function Wishlist() {
 
   if (data?.data?.wishlist.length < 1) {
     return (
-      <p className="text-center text-lg text-red-400 mt-12">
-        No Book Added to Wishlist
-      </p>
+      <p className="text-center text-lg mt-12">No Book Added to Wishlist</p>
     );
   }
 
