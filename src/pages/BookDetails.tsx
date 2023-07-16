@@ -4,13 +4,10 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { FaUserAlt } from "react-icons/fa";
-import cardIMG from "../assets/pexels-oziel-2846814.jpg";
+import { FaEdit, FaTrash, FaUserAlt } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
-import { useAppSelector } from "../redux/hooks";
-import { IReadList } from "../types/IReadList";
 import {
   useAddCommentMutation,
   useDeleteBookMutation,
@@ -21,6 +18,8 @@ import {
   useAddToWishlistMutation,
   useGetSingleUserQuery,
 } from "../redux/features/user/userApi";
+import { useAppSelector } from "../redux/hooks";
+import { IReadList } from "../types/IReadList";
 
 export default function BookDetails() {
   const { id } = useParams();
@@ -109,25 +108,25 @@ export default function BookDetails() {
   };
 
   return (
-    <div className="w-9/12 mx-auto my-12">
-      <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
+    <div className="w-5/12 mx-auto my-12">
+      <p className="text-center text-2xl font-bold text-slate-950 ">
         Details of {data?.data?.title}
       </p>
       <div className="card lg:card-side bg-base-100 shadow-xl mt-8">
-        <figure>
-          <img src={cardIMG} alt="Album" className="lg:w-64" />
-        </figure>
         <div className="card-body">
           <h2 className="card-title"> {data?.data?.title} </h2>
           <p className="flex-grow-0">
-            Author : <span className="text-cyan-500">{data?.data?.author}</span>
+            Author :{" "}
+            <span className="text-slate-950">{data?.data?.author}</span>
           </p>
           <p className="flex-grow-0">
-            Genre : <span className="text-cyan-500">{data?.data?.genre}</span>
+            Genre : <span className="text-slate-950">{data?.data?.genre}</span>
           </p>
           <p className="flex-grow-0">
             Publication Date :{" "}
-            <span className="text-cyan-500">{data?.data?.publicationDate}</span>
+            <span className="text-slate-950">
+              {data?.data?.publicationDate}
+            </span>
           </p>
           <div className="card-action mt-4 flex gap-4">
             <button
@@ -135,7 +134,7 @@ export default function BookDetails() {
               className={`${
                 webUser?.data?.wishlist.includes(data?.data?.title) &&
                 `btn-disabled`
-              } btn bg-cyan-500 text-white hover:bg-cyan-600`}
+              } btn btn-xs text-white bg-slate-950`}
             >
               Wishlist
             </button>
@@ -145,7 +144,7 @@ export default function BookDetails() {
                 webUser?.data?.readList.find(
                   (book: IReadList) => book?.book === data?.data?.title
                 ) && `btn-disabled`
-              } btn bg-transparent border-cyan-500 text-cyan-500`}
+              } btn btn-xs text-white bg-slate-950 `}
             >
               Plan To Read
             </button>
@@ -156,15 +155,15 @@ export default function BookDetails() {
               <div className="mt-4 flex gap-4">
                 <button
                   onClick={handleGoToEdit}
-                  className="btn bg-cyan-500 px-10 text-white hover:bg-cyan-600"
+                  className="btn btn-sm bg-slate-950 text-white"
                 >
-                  Edit
+                  Edit <FaEdit />
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="btn bg-transparent px-8 border-red-500 text-red-500"
+                  className="btn btn-sm bg-slate-950 text-white"
                 >
-                  Delete
+                  Delete <FaTrash />
                 </button>
               </div>
             )}
@@ -178,18 +177,19 @@ export default function BookDetails() {
             <input
               type="text"
               name="comment"
-              placeholder="Type your Review"
-              className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
+              placeholder="Leave a comment"
+              className="input input-bordered w-full"
             />
             <span>
-              <button type="submit">Submit</button>
+              <button type="submit" className="btn">
+                Add comment
+              </button>
             </span>
           </label>
         </div>
       </form>
 
       <div className="mt-8">
-        <p className="text-lg text-cyan-500">Reviews</p>
         {data?.data?.comments.map((comment: string, idx: number) => (
           <div key={idx} className="flex items-center gap-4 mt-4">
             <FaUserAlt />

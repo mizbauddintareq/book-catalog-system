@@ -13,7 +13,7 @@ export default function TableRow({ book, idx }: ITable) {
 
   return (
     <tr>
-      <th> {idx + 1} </th>
+      <td> {idx + 1} </td>
       <td> {title} </td>
       <td> {author} </td>
       <td> {genre} </td>

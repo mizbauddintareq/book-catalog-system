@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useAppSelector } from "../redux/hooks";
-import { IReadList } from "../types/IReadList";
+import Loader from "../components/Loader";
 import ReadCard from "../components/ReadCard";
 import { useGetSingleUserQuery } from "../redux/features/user/userApi";
-import Loader from "../components/Loader";
+import { useAppSelector } from "../redux/hooks";
+import { IReadList } from "../types/IReadList";
 
 export default function ReadingList() {
   const { user } = useAppSelector((state) => state.user);
@@ -26,11 +26,11 @@ export default function ReadingList() {
 
   return (
     <section className="container mx-auto my-12">
-      <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
-        Here are your book from Reading List
+      <p className="text-center text-2xl text-slate-950 font-bold">
+        Welcome to my reading list
       </p>
 
-      <div className="grid lg:grid-cols-3 gap-8 mt-8">
+      <div className="grid lg:grid-cols-4 gap-8 mt-8">
         {data?.data?.readList.map((list: IReadList, idx: number) => (
           <ReadCard key={idx} list={list}></ReadCard>
         ))}

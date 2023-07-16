@@ -4,7 +4,6 @@
 import Loader from "../components/Loader";
 import { useGetSingleUserQuery } from "../redux/features/user/userApi";
 import { useAppSelector } from "../redux/hooks";
-import { FaBook } from "react-icons/fa";
 
 export default function Wishlist() {
   const { user } = useAppSelector((state) => state.user);
@@ -25,19 +24,20 @@ export default function Wishlist() {
 
   return (
     <section className="container mx-auto my-12">
-      <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
-        Here are your book from wishlist
+      <p className="text-center font-bold text-2xl text-slate-950">
+        Welcome to wishlist
       </p>
 
-      <div className="grid lg:grid-cols-3 gap-8 mt-8">
+      <div className="grid lg:grid-cols-4 gap-8 mt-8">
         {data?.data?.wishlist.map((book: string, idx: number) => (
           <div
             key={idx}
-            className="overflow-hidden bg-white rounded shadow-md text-slate-500 shadow-slate-200"
+            className="overflow-hidden rounded shadow-lg text-slate-950"
           >
             <div className="p-6 flex items-center gap-4 justify-center">
-              <FaBook />
-              <p>{book}</p>
+              <p>
+                Title: <span className="font-semibold">{book}</span>
+              </p>
             </div>
           </div>
         ))}

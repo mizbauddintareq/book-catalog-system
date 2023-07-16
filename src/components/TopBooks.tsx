@@ -15,9 +15,9 @@ export default function TopBooks() {
         Best books of the world
       </p>
 
-      <div className="grid lg:grid-cols-3 mt-10">
+      <div className="grid lg:grid-cols-4 mt-10">
         {data?.data.map((book: IBook) => (
-          <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card bg-base-100 shadow-xl mx-auto">
             <div className="card-body">
               <h2 key={book._id} className="card-title">
                 {book.title}

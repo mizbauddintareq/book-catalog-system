@@ -5,8 +5,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { toast } from "react-hot-toast";
-import { useAppSelector } from "../redux/hooks";
 import { useAddBookMutation } from "../redux/features/book/bookApi";
+import { useAppSelector } from "../redux/hooks";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export default function AddNewBook() {
@@ -63,51 +63,59 @@ export default function AddNewBook() {
   };
 
   return (
-    <div className="container mx-auto mt-12">
-      <p className="text-center text-xl font-semibold underline text-cyan-600 underline-offset-8 uppercase">
-        Fill up the info to Add book
-      </p>
-      <div className="mt-8 py-8 bg-slate-200 rounded-lg">
-        <form onSubmit={handleAddBook}>
-          <div className="grid lg:grid-cols-2 gap-8 w-9/12 mx-auto">
+    <div className="flex items-center justify-center h-screen">
+      <div className="w-4/12 p-8 rounded-lg bg-white shadow-md">
+        <form onSubmit={handleAddBook} className="space-y-6">
+          <h1 className="text-center text-2xl font-bold text-slate-950">
+            Please Add A New Book
+          </h1>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
             <input
               type="text"
               name="title"
               placeholder="Enter title"
-              className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
+              className="input input-bordered w-full"
               required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Author
+            </label>
             <input
               type="text"
               name="author"
               placeholder="Enter Author"
-              className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
+              className="input input-bordered w-full"
               required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Genre</label>
             <input
               type="text"
               name="genre"
               placeholder="Enter Genre"
-              className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
+              className="input input-bordered w-full"
               required
             />
-
-            <div className="form-control">
-              <label className="input-group">
-                <span className="bg-neutral text-white">Publish Date</span>
-                <input
-                  type="date"
-                  name="publishDate"
-                  className="input input-bordered w-full focus:outline-none focus:border-cyan-500"
-                  required
-                />
-              </label>
-            </div>
           </div>
-          <div className="w-9/12 mx-auto mt-8">
+          <div>
+            <label className="block text-sm font-medium ">Publish Date</label>
+            <input
+              type="date"
+              name="publishDate"
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
+          <div className="flex justify-center ">
             <button
               type="submit"
-              className="btn btn-block btn-neutral text-white"
+              className="btn hover:bg-slate-950 bg-slate-950 text-white w-full"
             >
               Add The Book
             </button>
